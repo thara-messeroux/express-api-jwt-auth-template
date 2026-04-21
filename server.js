@@ -1,34 +1,22 @@
-// Load environment variables from .env
-require("dotenv").config();
-
-// Import the tools our server needs
+// server.js
+// this is the main file that runs our express server. It imports all the necessary dependencies, sets up middleware, connects to the database, and defines the routes for our API. When we run this file, it starts the server and listens for incoming requests on a specified port.
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
-const mongoose = require("mongoose");
+const app = express();
 const cors = require("cors");
 const logger = require("morgan");
+const testController = require("./controllers/test-jwt");
+const authController = require("./controllers/auth");
+require("./db/connection");
 
-// Create the Express app
-const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(logger("dev"));
 
-// Connect to MongoDB using the secret URL from .env
-mongoose.connect(process.env.MONGODB_URI);
-
-// Let us know in the terminal when MongoDB connects
-mongoose.connection.on("connected", () => {
-  console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
-});
-
-// Middleware = helpers that run before routes
-app.use(cors()); // lets other apps talk to this API
-app.use(express.json()); // lets us read JSON from requests
-app.use(logger("dev")); // shows requests in the terminal
-
-// Test route so we know the server is alive
-app.get("/", (req, res) => {
-  res.json({ message: "The Express API is running." });
-});
-
-// Start the server
+// Routes go here
+app.use("/test-jwt", testController);
+app.use("/auth", authController);
 app.listen(3000, () => {
   console.log("The express app is ready!");
 });
