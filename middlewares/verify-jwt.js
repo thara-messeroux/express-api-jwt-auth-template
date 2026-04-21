@@ -1,7 +1,5 @@
 // middlewares/verify-jwt.js
 
-// This middleware is responsible for verifying the JWT token sent in the Authorization header of incoming requests. It checks if the token is valid and, if so, it decodes the token and attaches the user information to the request object for use in subsequent middleware or route handlers. If the token is invalid or missing, it responds with a 401 Unauthorized status.
-
 const jwt = require("jsonwebtoken");
 
 const verifyJwt = (req, res, next) => {

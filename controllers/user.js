@@ -11,8 +11,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// My Profile Route AKA user show route
-// users/me
 router.get("/me", async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
