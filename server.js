@@ -8,6 +8,9 @@ const cors = require("cors");
 const logger = require("morgan");
 const testController = require("./controllers/test-jwt");
 const authController = require("./controllers/auth");
+const userController = require("./controllers/user");
+const verifyJwt = require("./middlewares/verify-jwt");
+
 require("./db/connection");
 
 app.use(cors());
@@ -17,6 +20,12 @@ app.use(logger("dev"));
 // Routes go here
 app.use("/test-jwt", testController);
 app.use("/auth", authController);
+// Any Routes below this verify token you must be logged in
+// AKA - the authorization header
+app.use(verifyJwt);
+app.use("/users", userController);
+
 app.listen(3000, () => {
   console.log("The express app is ready!");
 });
+
